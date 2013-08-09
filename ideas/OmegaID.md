@@ -20,3 +20,11 @@ So what if we have blank wholes of ids? We have two ways which we have not decid
 
  - Shift all the ids down and do the same in the world (SLOW)
  - Leave the whole there and when new ids are added fill in the space (FASTER)
+
+## Possible issues
+
+ - World data gets loaded before id conversion file does.
+
+## Possible solutions for the issues
+
+ - Have client recieve all the data and just not allow it to do anything until the id conversion file is recieved
