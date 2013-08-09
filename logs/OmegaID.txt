@@ -1,0 +1,73 @@
+[8/8/2013 8:15:44 PM] hunterboerner: I haz idea
+[8/8/2013 8:16:08 PM] hunterboerner: this was discussed in #minecraftforge
+[8/8/2013 8:16:22 PM] hunterboerner: so you know how ids are currently implemented terribly
+[8/8/2013 8:18:12 PM] hunterboerner: and conflicts
+[8/8/2013 8:18:24 PM] hunterboerner: well we can't use strings because they take up too much space
+[8/8/2013 8:18:37 PM] hunterboerner: (yes they do do the math)
+[8/8/2013 8:18:46 PM] hunterboerner: but static ids will be a problem
+[8/8/2013 8:19:09 PM] hunterboerner: so we came up with having a file in your world folder that is a conversion between the two
+[8/8/2013 8:19:31 PM] hunterboerner: it will have (oreQuantonium: 10)
+[8/8/2013 8:19:34 PM] hunterboerner: or something like that
+[8/8/2013 8:19:40 PM] hunterboerner: and it gets loaded on the world load
+[8/8/2013 8:20:01 PM] hunterboerner: when you add a new mod it gets assigned ids at the end
+[8/8/2013 8:20:15 PM] hunterboerner: so you may have different ids for each world
+[8/8/2013 8:20:21 PM] hunterboerner: depending on when you added the mod
+[8/8/2013 8:20:39 PM] hunterboerner: Whadya think fokas?
+[8/8/2013 8:20:53 PM] LordFokas: you need server->client communication
+[8/8/2013 8:20:56 PM] LordFokas: because of servers
+[8/8/2013 8:20:59 PM] hunterboerner: yes
+[8/8/2013 8:21:20 PM] hunterboerner: you can send the data over packets
+[8/8/2013 8:21:25 PM] hunterboerner: let me find it real quick
+[8/8/2013 8:22:46 PM] hunterboerner: this is how I did it in my old bukkit plugin
+[8/8/2013 8:22:46 PM] hunterboerner: https://github.com/hunterboerner/MC-Kill-Count-Bukkit/blob/f2668c1e8c01a4837cd4baf0e8cd7c9c61c97c74/src/me/hunterboerner/killCount/main.java#L56 
+[8/8/2013 8:22:57 PM] hunterboerner: I'm pretty sure it's plausible in forge
+[8/8/2013 8:33:05 PM] LordFokas: you need to mess with a lot of things
+[8/8/2013 8:33:27 PM] LordFokas: that packet MUST arrive before any chunks are sent
+[8/8/2013 8:33:40 PM] LordFokas: otherwise shit will happen
+[8/8/2013 8:33:58 PM] LordFokas: but yes, we can try it.
+[8/8/2013 8:34:20 PM] hunterboerner: the client could deny chunks (or put them on hold) until it receives the file
+[8/8/2013 8:35:03 PM] LordFokas: all you need to do is rebuild two arrays
+[8/8/2013 8:35:49 PM] LordFokas: actually, it now sounds real simple
+[8/8/2013 8:36:12 PM] LordFokas: and because those are ints
+[8/8/2013 8:36:24 PM] LordFokas: you can create an array with just the right size
+[8/8/2013 8:36:37 PM] LordFokas: no need for 4096 slots when your mod setup uses 300
+[8/8/2013 8:37:05 PM] LordFokas: thus reducing memory usage, and block lookup time
+[8/8/2013 8:37:07 PM] LordFokas: I like this
+[8/8/2013 8:37:12 PM] LordFokas: write it all down :p
+[8/8/2013 8:39:55 PM] hunterboerner: how are we going to determine the required size?
+[8/8/2013 8:42:36 PM] LordFokas: blocks are loaded into a temporary list
+[8/8/2013 8:42:53 PM] LordFokas: like, say, an ArrayList
+[8/8/2013 8:43:44 PM] hunterboerner: I'm creating heisenbugmc/ideas
+[8/8/2013 8:43:54 PM] LordFokas: DON'T!
+[8/8/2013 8:43:57 PM] hunterboerner: why not
+[8/8/2013 8:43:59 PM] LordFokas: I hate that
+[8/8/2013 8:44:01 PM] hunterboerner: we need somewhere to put it
+[8/8/2013 8:44:02 PM] LordFokas: repos are for code
+[8/8/2013 8:44:05 PM] LordFokas: not something else
+[8/8/2013 8:44:21 PM] hunterboerner: they can also store documentation
+[8/8/2013 8:44:25 PM] hunterboerner: which is what this is
+[8/8/2013 8:44:35 PM] LordFokas: there's people who have repositories just for the issue tracker to manage their home!
+[8/8/2013 8:44:47 PM] hunterboerner: ok so where do we put it
+[8/8/2013 8:44:51 PM] LordFokas: I feel like slapping the living shit out of them
+[8/8/2013 8:45:00 PM] hunterboerner: ok so where do we put it
+[8/8/2013 8:45:03 PM] LordFokas: we have a dropbox >.>
+[8/8/2013 8:45:09 PM] hunterboerner: I want it to be public
+[8/8/2013 8:45:24 PM] hunterboerner: I'm going to put it in the dropbox
+[8/8/2013 8:45:31 PM] hunterboerner: put make a mcforum post too
+[8/8/2013 8:45:42 PM] LordFokas: create a repo in the group
+[8/8/2013 8:45:50 PM] LordFokas: called HeisenBug
+[8/8/2013 8:45:59 PM] LordFokas: everything non-code goes there.
+[8/8/2013 8:46:01 PM] hunterboerner: and what do we put there :?
+[8/8/2013 8:46:09 PM] hunterboerner: yeah that's what I was thinking....
+[8/8/2013 8:46:11 PM] LordFokas: like ideas
+[8/8/2013 8:46:13 PM] LordFokas: and shit
+[8/8/2013 8:46:31 PM] hunterboerner: so HeisenBugMC/HeisenBugMC
+[8/8/2013 8:46:48 PM] LordFokas: I hate the MC part so much >.>
+[8/8/2013 8:46:52 PM] LordFokas: but meh
+[8/8/2013 8:46:56 PM] LordFokas: whatever
+[8/8/2013 9:02:38 PM] hunterboerner: what should we call this?
+[8/8/2013 9:03:57 PM] LordFokas: the ID thing?
+[8/8/2013 9:04:54 PM] LordFokas: i'd call it OmegaID
+[8/8/2013 9:05:02 PM] LordFokas: because it's the end :D
+[8/8/2013 9:05:11 PM] LordFokas: but it's more of a Forge PR than a mod
+[8/8/2013 9:05:19 PM] LordFokas: unless you make it a Jar Mod
