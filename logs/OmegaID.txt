@@ -71,3 +71,7 @@
 [8/8/2013 9:05:02 PM] LordFokas: because it's the end :D
 [8/8/2013 9:05:11 PM] LordFokas: but it's more of a Forge PR than a mod
 [8/8/2013 9:05:19 PM] LordFokas: unless you make it a Jar Mod
+==============================================================================
+[8/8/13 10:21:35 PM] LordFokas: you don't need to replace ID's with strings
+[8/8/13 10:21:48 PM] LordFokas: but you can register blocks with strings only
+[8/8/13 10:22:00 PM] LordFokas: and make the engine automagically assign ids
