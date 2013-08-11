@@ -22,3 +22,6 @@ Our ideas, logs, rants, docs, and derps.
 ## IRC Commands for channel
 /msg Chanserv flags #HEISENBUG USER +vVRi
 /mode #HEISENBUG +I *!*@your/user/cloak (note uppercase)
+
+To get in manually...
+/msg chanserv invite #heisenbug
