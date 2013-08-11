@@ -17,3 +17,8 @@ Our ideas, logs, rants, docs, and derps.
          |    +----OmegaID.txt
          +----tree.pl
 
+
+
+## IRC Commands for channel
+/msg Chanserv flags #HEISENBUG USER +vVRi
+/mode #HEISENBUG +I *!*@your/user/cloak (note uppercase)
