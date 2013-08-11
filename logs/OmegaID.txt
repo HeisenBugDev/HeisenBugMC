@@ -165,6 +165,150 @@ Jul 12 13:35:22 <AbrarSyed> right now, Minecraft MUST have the same IDs laod to 
 Jul 12 13:35:23 <Flenix>    That's a cool idea. But, I'm one of those guys that likes my stuff in creative in a certain order (or when sorting inventory with InvTweaks)
 Jul 12 13:35:50 <AbrarSyed> yes hunter, you said that after I introduced the name-id map idea
 Jul 12 13:35:53 <hunterb>   back to build.xmling
+_______________________________________________
+
+[22:09:56] <hunterboerner> my team (HeisenBug) are planning a big PR for forge
+[22:09:58] <GrygrFlzr> FC?
+[22:10:07] <hunterboerner> flowerchild
+[22:10:11] <GrygrFlzr> ah
+[22:10:13] <GrygrFlzr> :/
+[22:10:25] <hunterboerner> this is the plan https://github.com/HeisenBugMC/HeisenBugMC/blob/master/ideas/OmegaID.md
+[22:10:32] <hunterboerner> AbrarSyed should remember that
+[22:10:33] <GrygrFlzr> Welp, time to test forge compatibility on his mod (likely not compatible, oh well)
+[22:10:37] <hunterboerner> we have it in the log folder
+[22:10:54] <luacs1998> GrygrFlzr, base modding is effectively banned with the new launcher
+[22:11:00] <GrygrFlzr> ikr
+[22:11:01] <luacs1998> its doable, but a pita
+[22:11:13] <GrygrFlzr> Yeah, and he didn't even put on proper instructions
+[22:11:19] <hunterboerner> but we've got cpw that takes care of it all
+[22:11:22] <GrygrFlzr> "place files into minecraft.jar"
+[22:11:27] <GrygrFlzr> :/
+[22:11:54] <luacs1998> hunterboerner, don't pull it to forge, approach mojang with the idea
+[22:11:57] <GrygrFlzr> methinks I need to make an instruction page on the modlist, at least for forge
+[22:12:00] <Morgrimm> mother fucker. I need to update forge >.<
+[22:12:11] <Morgrimm> how hard is it to update forge with the pahi setup?
+[22:12:16] <luacs1998> not sure
+[22:12:18] <hunterboerner> what is the credibality of luacs1998?
+[22:12:29] <GrygrFlzr> No idea, we've had so many people ask pahi setup updates XD
+[22:12:34] *** Quits: copygirl (~copygirl@p5B29B3C0.dip0.t-ipconnect.de) (Ping timeout: 186 seconds)
+[22:12:36] <hunterboerner> because I don't think he knows that Mojang doesn't listen to people
+[22:12:49] <GrygrFlzr> >doesn't listen to people
+[22:12:50] <GrygrFlzr> what?
+[22:12:50] <hunterboerner> we've got a tuto for intellij
+[22:13:13] *** Quits: Encryptic (~textual@c-98-229-38-156.hsd1.ma.comcast.net) (Quit: Encryptic)
+[22:13:19] *** Quits: Morgrimm (~Morgrimm@CPE00259c5d49bd-CM602ad0911ce3.cpe.net.cable.rogers.com) (Quit: Leaving)
+[22:13:26] <hunterboerner> GrygrFlzr: http://www.minecraftforge.net/wiki/Forge_Development_in_IntelliJ_IDEA
+[22:13:32] <hunterboerner> intellij kick a**
+[22:13:39] *** Quits: Zorn_Taov (~Greenfox@c-98-207-128-172.hsd1.ca.comcast.net) ()
+[22:13:43] <luacs1998> how sure are you that i cant just copy a vanilla world into a omegaid world
+[22:13:44] <GrygrFlzr> ....I didn't ask for a link to IntelliJ
+[22:14:29] <hunterboerner> GrygrFlzr: too bad
+[22:14:39] <hunterboerner> luacs1998: can you rephrase the question
+[22:14:48] <hunterboerner> I don't see the problem you are presenting
+[22:14:57] *** Joins: pixlepix_ (~localmaca@cpe-67-252-40-60.nycap.res.rr.com)
+[22:14:59] *** Quits: pixlepix (~localmaca@cpe-67-252-40-60.nycap.res.rr.com) (Read error: Connection reset by peer)
+[22:14:59] *** pixlepix_ is now known as pixlepix
+[22:15:09] <luacs1998> how sure are you that i cant take my vanilla world and put it in a minecraft with your mod
+[22:15:24] <hunterboerner> I don't care if  you put it in there
+[22:15:30] *** Quits: pugi (~pugi@host-091-097-011-247.ewe-ip-backbone.de) ()
+[22:15:30] <luacs1998> i think LM would be asking the same questions
+[22:15:39] <luacs1998> now thats a rather callous attitude
+[22:15:52] <hunterboerner> you're the one not using the fancy new system :P
+[22:16:13] <luacs1998> i'm taking my old world, and i'm putting it into the new system.
+[22:16:22] <luacs1998> will my world go bad?
+[22:16:30] <hunterboerner> it could ask you if you would like to convert it to the new system or not
+[22:16:46] <luacs1998> and if i dont?
+[22:17:00] <hunterboerner> then youre just using the old vanilla system
+[22:17:00] <GrygrFlzr> So once it's been tainted with OmegaID you can't even load it in vanilla
+[22:17:13] <GrygrFlzr> :/
+[22:17:19] *** Joins: steffengy (~quassel@p5088FA45.dip0.t-ipconnect.de)
+[22:17:41] <hunterboerner> GrygrFlzr: if it's been taited with OmegaID then it's assumed you're using mods that add blocks (if you're not using mods it doesn't need to be enabled)
+[22:17:49] <luacs1998> hunterboerner, say, i take a ftb unleashed world, and i bring it to a omegaID game with the exact same mods
+[22:17:56] <luacs1998> will things go bad?
+[22:18:05] <hunterboerner> no
+[22:18:34] <hunterboerner> because it would detect that there is no name to id file there
+[22:18:38] <GrygrFlzr> hunterboerner: with the current mod system if you load it in vanilla it will still work, just removing the modded blocks from existence, there's still a graceful degradation
+[22:18:44] <luacs1998> so i can take worlds in and out of omegaID with no problems?
+[22:18:56] <GrygrFlzr> With the omegaID system you're basically making a new world format
+[22:19:10] <luacs1998> (which is why i said, take it to mojang)
+[22:19:10] <hunterboerner> luacs1998: vanilla block ids will always be in the same order (that would be a forced thing)
+[22:19:19] <luacs1998> send jeb an email or something
+[22:19:42] <luacs1998> how about supporting future minecraft versions?
+[22:19:46] <ASB2> Really doubts jeb would respond
+[22:19:47] <GrygrFlzr> ^
+[22:19:51] <GrygrFlzr> * ^^
+[22:19:53] <hunterboerner> ^^^^
+[22:20:14] <GrygrFlzr> Seriously, if you're not gonna even bother trying, don't complain
+[22:20:38] <hunterboerner> luacs1998: new block added in vanilla we have two options for implementing this
+[22:20:42] *** cpw|out is now known as cpw
+[22:20:48] <hunterboerner> either allocate a bunch of space for vanilla block and items
+[22:21:09] <hunterboerner> or have it take a while and shift all the mod ids down the list and add the vanilla one in
+[22:21:25] <hunterboerner> the second one would be more long term but slower when updating a world
+[22:21:35] <GrygrFlzr> ._.
+[22:21:38] <luacs1998> and also, because i'm sure there's a lot of people using worldedit and mcedit
+[22:21:42] <GrygrFlzr> ^
+[22:21:51] <luacs1998> how is omegaid going to affect them?
+[22:22:23] <GrygrFlzr> And you can't just force those people to support your new-modded-world-format either
+[22:22:28] <luacs1998> especially mcedit, thats a bigger problem
+[22:22:55] <hunterboerner> world edit looks at ids (the name to id system would have to be reworked because it is just a csv file (don't quote me on that)) and you can access an id
+[22:23:09] <hunterboerner> but you can't assume it to be a certain block
+[22:23:14] <hunterboerner> because the ids are changing
+[22:23:21] *** Quits: steffengy_ (~quassel@p5088F07C.dip0.t-ipconnect.de) (Ping timeout: 380 seconds)
+[22:23:23] <luacs1998> and mcedit?
+[22:23:26] <hunterboerner> so worldedit would have to look at the unlocalizedname
+[22:23:27] <GrygrFlzr> Practically no compatibility, then
+[22:23:39] <GrygrFlzr> hunterboerner, you need to take a look at the bigger picture
+[22:23:55] <GrygrFlzr> Not just at how forge would handle your changes
+[22:23:56] *** Quits: LordFokas (~LordFokas@bl22-62-198.dsl.telepac.pt) (Read error: Connection reset by peer)
+[22:23:59] *** Quits: Gilded_Knight (~Gilded_Kn@pool-71-251-212-2.nwrknj.fios.verizon.net) (Quit: Leaving)
+[22:24:49] <luacs1998> also, i doubt cp.w and LM would accept PRs for changing the world format, which is what you come across as wanting to do
+[22:24:51] <hunterboerner> the bigger picture is you don't touch vanilla for compat between forge worlds and non forge clients
+[22:25:04] <luacs1998> but? external tools can go to hell?
+[22:25:17] *** Quits: Cojosan (~Brojosan@86.sub-70-210-6.myvzw.com) (Read error: Connection reset by peer)
+[22:25:28] <hunterboerner> no world edit would just have to look at unlocalized names
+[22:25:37] <GrygrFlzr> ...
+[22:25:37] <hunterboerner> at least for mod blocks
+[22:25:43] <luacs1998> if you're gonna do such a big change i recommend you release as a standalone mod first
+[22:25:49] <luacs1998> MCEDIT, MCEDIT
+[22:25:58] <luacs1998> which is a different beast altogether
+[22:26:01] <hunterboerner> because already if you're going to modify a mod block with mc edit it depends on your configs
+[22:26:11] <GrygrFlzr> I really very much doubt the PR will be accepted
+[22:26:15] <luacs1998> so? how would users configure it?
+[22:26:22] <GrygrFlzr> hunterboerner, graceful degradation
+[22:26:41] <luacs1998> GrygrFlzr, LM will say it's absolute bull shit and rage at everything
+[22:26:48] <GrygrFlzr> luacs1998, I agree
+[22:26:49] <hunterboerner> either we have them look at the name - id file or we present an interface in one of the menus in game
+[22:27:02] <hunterboerner> luacs1998: LM seems to do that a lot
+[22:27:19] *** Quits: JohSketch (~JohSketch@c-66-177-104-168.hsd1.fl.comcast.net) (Quit: Leaving...)
+[22:27:28] <GrygrFlzr> Basically, you are making a new world format/
+[22:27:33] <luacs1998> thats thw whole point, only QUALITY work, with a proper and valid USE CASE, he accepts
+[22:27:51] *** duke605|Work is now known as duke605
+[22:27:55] <luacs1998> and i doubt LM would accept PRs for a new world format in forge
+[22:27:55] <hunterboerner> no not a new format just a new interface to the existing format
+[22:28:02] <GrygrFlzr> No, you're not
+[22:28:06] <luacs1998> it comes across as a new format
+[22:28:18] <GrygrFlzr> You said it yourself, it requires conversion
+[22:28:18] <luacs1998> the id-block mapping file is already major enough
+[22:28:18] <hunterboerner> re-assigning ids automatically is not a new format
+[22:28:25] <GrygrFlzr> That's a new world format
+[22:28:30] <luacs1998> idresolver does it, and does it well
+[22:28:33] <GrygrFlzr> ^
+[22:28:41] <luacs1998> i dont see where your mod comes in to do it better
+[22:29:30] <luacs1998> and also, it would require big time fucking up of mc internals
+[22:29:49] <luacs1998> when blocks and items are registered, they are registered with an ID
+[22:29:57] <luacs1998> you'd have to rewrite that
+[22:30:24] <hunterboerner> the plan is to ignore the ids and just use the unlocalizedname assign an id for that automatically and write it to a config file
+[22:30:25] <luacs1998> its very invasive, and LM won't do it
+[22:30:40] *** Quits: ShamblerDK (~quassel@37.75.163.130) (Remote host closed the connection)
+[22:31:00] <hunterboerner> you do realize Mojang changes stuff dramatically ever few updates
+[22:31:05] <luacs1998> two things: either release as standalone mod (give people a choice) or apporach mojang with the idea (they dont listen)
+[22:31:20] <luacs1998> they can do it, because they write minecraf
+[22:31:20] <GrygrFlzr> hunterboerner, the point is, you are not Mojang
+[22:31:39] <luacs1998> if you know the concept of headcrabs, then forge is like a headcrab on mojang
+[22:31:47] <hunterboerner> the reason I wanted to do a PR is because it modifys so much base classes
+[22:31:58] <luacs1998> optifine mods many base classes
+[22:32:16] <luacs1998> i know many mods that still stay in the jar
+[22:32:41] <luacs1998> if you really want this in forge, then make your base edits more generic
 
 =========== SKYPE LOGS ==============
 
