@@ -309,6 +309,230 @@ _______________________________________________
 [22:31:58] <luacs1998> optifine mods many base classes
 [22:32:16] <luacs1998> i know many mods that still stay in the jar
 [22:32:41] <luacs1998> if you really want this in forge, then make your base edits more generic
+____________________________________
+
+] <hunterboerner> so Grum, did you see that conversation yesterday about my group's plan for rewriting the id system?
+[10:56:33] <auouymous> block and item IDs?
+[10:56:33] *** Joins: tiin57|Away (~tiin57@198.46.153.9)
+[10:56:54] <hunterboerner> if you didn't I was told many times to just tell Mojang so here: https://github.com/HeisenBugMC/HeisenBugMC/blob/master/ideas/OmegaID.md <- pretty version https://github.com/HeisenBugMC/HeisenBugMC/blob/master/logs/OmegaID.txt <- contains the logs from yesterday
+[10:58:26] *** Joins: sammko (~sammko@dial-109-230-56-118.orange.sk)
+[10:58:53] <dfj> I've been thinking along similar lines - but it din't occur to me to try wedge it into forge.
+[10:59:43] <hunterboerner> yeah I don't think Mojang will listen to me
+[10:59:54] <hunterboerner> but it's worth telling peopel to get feedback
+[11:00:28] <tpw_rules> why would mojang care
+[11:00:32] <hunterboerner> and see if Gr_um will say if they have looked into it, why they thought it isn't a good id
+[11:00:38] <hunterboerner> tpw_rules: that's my point
+[11:00:58] *** Quits: SoundLogic (~SoundLogi@ppp-70-226-164-87.dsl.mdsnwi.ameritech.net) (Read error: Connection reset by peer)
+[11:00:59] <auouymous> dont shift IDs
+[11:01:10] <hunterboerner> auouymous: do you have a better plan?
+[11:01:12] *** Joins: SoundLogic (~SoundLogi@ppp-70-226-164-87.dsl.mdsnwi.ameritech.net)
+[11:01:17] <hunterboerner> wait shift as in the whole idea
+[11:01:24] <hunterboerner> or the one about when mc adds new blocks?
+[11:01:37] *** tiin57|Away is now known as tiin57
+[11:02:05] <sammko> hunterboerner: i think we should not make omegaid use ids below 256, cause vanilla blocks wont be above 255
+[11:02:20] <Grum> hunterboerner: i saw nothing
+[11:02:24] <auouymous> keep a list of mod name, item/block name, ID and flag that is unset if the ID isn't registered
+[11:02:24] <hunterboerner> sammko: vanilla blocks can't go above it?
+[11:02:32] <Grum> they can
+[11:02:33] <hunterboerner> Grum: oh well I gave you a few links up there ^^
+[11:02:39] <sammko> the 4096 thing is from forge isnt it?
+[11:02:51] <hunterboerner> sammko: no :P
+[11:02:54] <tpw_rules> that was moved to minecraft
+[11:02:56] <sammko> cause some time ago it was from mDyio's mod
+[11:03:02] <dfj> so - if you had a nice seaparation between shapes and materials, it could still render quickly if most of the shapes were common, and they were assigned IDs - this woudl a product space of shapes (stairs, subblocks, etc..) and materials - would not eat up huge numbers of strings, but would eat up a lot of IDs.
+[11:03:08] <hunterboerner> https://mojang.com/2012/02/new-minecraft-map-format-anvil/
+[11:03:19] <hunterboerner> it was introduced with anvil
+[11:03:20] <auouymous> I've seen servers accidentally started without mods and the flag would preserve the IDs
+[11:03:22] <sammko> when anvil (save format) came out it could save 4096 but the game couldnt use them
+[11:03:27] <Grum> We keep ids (they are 1.5 bytes per id) <-- that makes no sense
+[11:03:40] <Grum> might as well use 16bits then? :D
+[11:03:44] <sammko> yeah
+[11:03:50] <auouymous> there could be a config option to prune IDs that have the flag unset
+[11:03:52] <Grum> unless you want to keep storing byte+nibble
+[11:03:53] <hunterboerner> fine I will say 16 bits
+[11:03:57] <hunterboerner> :P
+[11:04:01] <sammko> 65535
+[11:04:06] <sammko> not a problem fitting stuff into that
+[11:04:09] <Grum> but this is what we've planned to do for a long long time
+[11:04:15] <Grum> just not easy to get to that point
+[11:04:22] <sammko> and you havent done it yet .,.
+[11:04:26] <sammko> -.-*
+[11:04:33] <dfj> that nybble is loathsome - please, a short - it will compress fine.
+[11:04:45] <Grum> sammko: obviously we haven't
+[11:05:00] <Grum> are you now considering that doing it is 'easy' ?
+[11:05:05] <Grum> or suggesting rather
+[11:05:05] <sammko> nope
+[11:05:06] <hunterboerner> well our plan for implementation was to leave the methods for setting a block id IN so that mods don't crash and explode. Just comment out the code in it so it doesn't do anything
+[11:05:09] <Grum> because its not hard to do
+[11:05:13] <Grum> it is hard to do right
+[11:05:14] <hunterboerner> and then other stuff I should write down
+[11:05:21] <Grum> don't forget the mandatory world migration
+[11:05:21] <Eydamos> why not save id's per mod like with the guihandler, every mod get's an id which get's synchronized between client and server
+[11:05:35] <sammko> ^
+[11:05:54] <Grum> the whole 'you need an id' is just bullcrap
+[11:05:54] <sammko> say that every mod has got 255 ids for free
+[11:05:56] <tpw_rules> because then you have to save the map per chunk, and still reallocate them in the ID map
+[11:06:10] <Grum> internally we use ids, it shouldn't be doing that
+[11:06:14] *** Quits: TheMike (~michael@pool-108-22-94-85.altnpa.east.verizon.net) (Read error: No route to host)
+[11:06:14] <Grum> id's are a serialization artifact
+[11:06:35] <hunterboerner> what would be the other option?
+[11:06:37] *** Joins: M3gaFr3ak (~Leon@p4FFF540F.dip0.t-ipconnect.de)
+[11:06:38] <Grum> they should only exist when you are either: sending data over the wire; or: persisting it on disk
+[11:07:08] <sammko> each mod could have an id (0-64) and have its own 255 block ids and then the final id would be (modid*255)+blockid
+[11:07:31] <Grum> assigning static ranges is also silly
+[11:07:36] *** bspkrs|out is now known as bspkrs
+[11:07:38] <tehbeard> Would that persistence include .schematic files?
+[11:07:38] <dfj> som mods need vastly different numbers of ids.
+[11:07:43] <tpw_rules> Grum: i assume it would be too expensive to map numeric IDs on a per-chunk basis?
+[11:07:53] <Grum> tehbeard: i dont care for .schematic files (i do nto have to, yay)
+[11:07:56] <M3gaFr3ak> grum isnt it needed to assign a static range if u have an array?
+[11:08:03] <Grum> tpw_rules: it would be silly, better would be region
+[11:08:04] <M3gaFr3ak> mc has a BlockList[]
+[11:08:06] <sammko> yepú
+[11:08:08] <sammko> lol
+[11:08:10] <tpw_rules> Grum: yeah
+[11:08:18] <M3gaFr3ak> so he should use ArrayList<> or so
+[11:08:19] <Grum> mc shouldn't have a Blocks.block[]
+[11:08:27] <tpw_rules> but i mean allocate a list of IDs per unit of saving, then a map of class name to ID
+[11:08:28] <Grum> it shouldn't evne use an array *AT ALL*
+[11:08:29] <sammko> but it has
+[11:08:30] <M3gaFr3ak> *shouldnt* but has
+[11:08:35] <sammko> soyeah
+[11:08:38] <Grum> id's shouldnt be available *anywhere* nor used anywhere
+[11:08:43] <tpw_rules> his implication is that a better ID system would not have it
+[11:08:58] <Grum> except for the serializers/deserializers in the networkcode & load/save system
+[11:09:21] <M3gaFr3ak> couldnt he just save the world as objects instead of an array of id's?
+[11:09:35] <sammko> filesize
+[11:09:40] <M3gaFr3ak> pff
+[11:09:43] <Grum> obviously not, store it as ids, on-load just talk in Block objects
+[11:09:45] <M3gaFr3ak> games take 20 gigs
+[11:09:46] <tpw_rules> Grum: what would be an efficient way to store the map in RAM then?
+[11:09:57] <tpw_rules> can java have an array of class pointers?
+[11:10:00] <Grum> World.getBlock(x,y,z) shouldn't return 'int' it should return Block
+[11:10:10] <M3gaFr3ak> yeah
+[11:10:13] * dfj mumbles something about network bandwidth, latency and similar for disk io on cheap hosting.
+[11:10:15] <Grum> tpw_rules: just translate on request
+[11:10:27] <Grum> within the code, having 'ids' is just .... stupid
+[11:10:28] <tpw_rules> that would work
+[11:10:32] <M3gaFr3ak> Grum do u know how the localization of fluids works?
+[11:10:32] <Grum> makes everything 100% static
+[11:10:34] <sammko> well, Block.BlockArray[world.getBlockId(x,y,z)] does that
+[11:10:36] <Grum> M3gaFr3ak: no
+[11:10:41] <Grum> sammko: yes and that is stupid
+[11:10:43] <M3gaFr3ak> the localized name retrurns internal names ôO
+[11:11:03] <timoteo2000> so, Grum, what you're saying is that a better ID system can't exist, because we shouldn't have an id system in the first place?
+[11:11:05] <M3gaFr3ak> i personally use Liquid.getName() and capitalize the first letter xd
+[11:11:16] <mDiyo> Not having an ID system would be loads better.
+[11:11:23] <hunterboerner> ^^
+[11:11:23] <sammko> yeah
+[11:11:31] <Grum> timoteo2000: yes
+[11:11:33] <M3gaFr3ak> how would we access items from other mods? reflection?
+[11:11:36] <mDiyo> You have to save the data somehow, but it doesn't have to be a giant array of IDs. :/
+[11:11:38] <Grum> having ids in the code means broken by definition
+[11:11:41] <M3gaFr3ak> (w/o id's)
+[11:11:42] <timoteo2000> but how would it work for creating new ItemStacks, and when you make a new block into the worlD?
+[11:11:46] <tpw_rules> M3gaFr3ak: their Block
+[11:11:53] <tpw_rules> you pass in a Block or an Item
+[11:12:00] <Grum> timoteo2000: just pass in a Block or Item?
+[11:12:06] <Grum> i mean right now we do: Block.sand.id ....
+[11:12:10] <Grum> why not just put in Block.sand? O.o
+[11:12:11] <sammko> yeah
+[11:12:16] <M3gaFr3ak> i should analyze how the fluid save to nbt stuff works
+[11:12:16] <M3gaFr3ak> ..
+[11:12:16] <timoteo2000> mm...
+[11:12:18] <Grum> i mean..seriously :P
+[11:12:41] <hunterboerner> so Grum, I don't mean to diverge the subject but is the Mojang API a high priority?
+[11:12:43] <Grum> oh this also means *ALL* of the code has to change; sammko: and this is why we're  back at: "why it is not done yet"
+[11:12:43] <M3gaFr3ak> i hate how in mc all normal blocks are IN the block class ôO
+[11:12:48] <M3gaFr3ak> thats awful
+[11:12:52] <timoteo2000> now, I see right now, at Mojang your priorities seem to be Modding API and 1.7, but is someone working on the no-ID system as well?
+[11:12:53] <Grum> hunterboerner: how do you expect us to make an api on something that is broken? :)
+[11:12:57] <timoteo2000> oh, never min dthen
+[11:13:17] <Grum> we'd never be able to do it better than Forge if we continue on this codebase
+[11:13:19] <M3gaFr3ak> timoteo2000 i dont think they'd go away from the id systme
+[11:13:33] <tiin57> Does anyone know where FML checks the mod versions when you join a server?
+[11:13:34] <sammko> why dont you use minecraftforge as an API -.- its the best API out there
+[11:13:48] <sammko> contact cpw and the other ppl
+[11:13:49] <timoteo2000> (let's shun ModLoader users..."
+[11:13:51] <tpw_rules> the only problem i can see is speedily generating ID<->Class mappings for network transport
+[11:13:51] <timoteo2000> )
+[11:13:57] <Grum> sammko: yes, and you love the 50kb of 'id configs' you need right?
+[11:14:00] <M3gaFr3ak> Grum the mc wiki tells me that you should be named "grumm" w/ 2 m
+[11:14:01] <dfj> I tired prototyping a type system, using generated interfaces to implement a tree (and take advantages of the VM's fast native tree-walking code for interfaces) - for immutable objects, interfaces are handy, they can also hold references to dynamic objects, as long as there is a fixed object intermediary.
+[11:14:07] <Grum> M3gaFr3ak: ingame yes
+[11:14:11] <M3gaFr3ak> ah kk
+[11:14:14] *** Joins: Shukaro (Shukaro@cpe-69-135-211-191.woh.res.rr.com)
+[11:14:19] <Grum> also, i sohuld be used 'Grum' ingame
+[11:14:21] <Grum> but someone took it ;)
+[11:14:26] <Grum> and then never used it ....
+[11:14:32] <M3gaFr3ak> :D
+[11:14:34] <Grum> i'll be the first user of the rename-servers when we offer it >:)
+[11:14:36] <dfj> :(
+[11:14:39] <Grum> *rename service
+[11:14:42] <dfj> heh.
+[11:14:44] <sammko> Grum, i dont have 50kb of configs but 1.13MB
+[11:14:44] <M3gaFr3ak> will u offer it?
+[11:14:46] <sammko> :P
+[11:14:48] <M3gaFr3ak> will it cost?
+[11:14:48] <timoteo2000> yeah, without an ID system, incompatibilities would go away, we'd be able to world gen with any block, etc.
+[11:14:54] <M3gaFr3ak> and why dont u just modify the database?!
+[11:14:55] <Grum> sammko: but forge is 'the best out there' ... so we 'should use it' right?
+[11:15:06] <Grum> M3gaFr3ak: because that is lame?
+[11:15:07] <sammko> still better than some crappy plugin system
+[11:15:07] <tiin57> XD
+[11:15:10] <Grum> i can take it whenever i want
+[11:15:11] <tehbeard> renames gonna be fun, having to migrate everything over to UUIDs
+[11:15:12] <tpw_rules> Grum: assuming the ID array in the chunk stays the way it is now, threading of writing that map should be easy
+[11:15:16] <timoteo2000> no longer in need of "BlockName ID: x" in configs, that'd be awesome
+[11:15:23] <Grum> tehbeard: that will be done before an API though ;)
+[11:15:33] <Grum> as being uuid-based is a requirement as well for any future
+[11:15:45] <tpw_rules> UUIDs for names or blocks?
+[11:15:55] <Grum> tpw_rules: personally i'd use a map per region
+[11:15:58] <Grum> and a map per connection
+[11:16:07] <tiin57> Grum: So, you've probably been asked this, but what's with the absence of activity on the API repo for a year now?
+[11:16:08] <tpw_rules> that makes sense actually
+[11:16:21] <Grum> tiin57: it shouldn't exist
+[11:16:28] <tiin57> Oh.
+[11:16:46] *** bspkrs is now known as bspkrs|out
+[11:16:47] <tpw_rules> Grum: the only reason i say chunk is that chunk is the unit of world data for the network connection
+[11:17:06] <Grum> tpw_rules: so send the chunk and the mapping needed to read it ;)
+[11:17:18] <tehbeard> I know that :0, it's just gonna be a pain to update databases that rely on username to UUID if it has to be done when a user logs in instead of being able to poll it.
+[11:17:36] <Renari> Does anyone know if it's possible to have multiple forge profiles with different mods in the vanilla launcher?
+[11:17:42] <tehbeard> that said a few 100k servers polling mojang for them might be bad
+[11:17:43] <Grum> tehbeard: i do not care for that shit :)
+[11:17:53] <Grum> that is the webguy's problem ;)
+[11:18:01] <tiin57> So, Grum, should https://dev.minecraft.net/blog/ exist? :/
+[11:18:08] <Grum> tiin57: yeah kinda inactive though ;)
+[11:18:11] <tiin57> Because that's not been updated since October
+[11:18:13] <tiin57> :P
+[11:18:34] <tpw_rules> is it supposed to not have CSS?
+[11:18:47] <tpw_rules> oic, the css isn't https
+[11:18:55] <Grum> http://dev.minecraft.net/blog/ <-- does there? :P
+[11:19:02] <tpw_rules> yeah
+[11:19:24] *** zen is now known as Lutzee
+[11:20:03] <M3gaFr3ak> will forge be able to exists parallel to the api?
+[11:20:12] <hunterboerner> sammko: you do know Grum helped make the bukkit plugin system...
+[11:20:13] <M3gaFr3ak> and will the api be advanced or mor like "make a block/item"?
+[11:20:36] <sammko> yes hunter
+[11:20:50] <tiin57> XD
+[11:20:59] <tiin57> https://docs.google.com/document/d/1puSEflHIqFNgSpoHUjr3esYTyYkifkMf0vQ6JDoaGmM/edit "Grum dislikes signing."
+[11:21:20] *** Joins: StevenB (~Steven@82.116.85.51)
+[11:21:30] *** Parts: M3gaFr3ak (~Leon@p4FFF540F.dip0.t-ipconnect.de) (Verlassend)
+[11:21:32] <Grum> i do not dislike signing
+[11:21:37] <Grum> i dislike giving the fake sense of 'safety'
+[11:22:06] *** cpw|out is now known as cpw
+[11:23:06] <tiin57> Ah
+[11:23:10] <Grum> 'oh i it is signed, then it must be safe' .. yeah .. that is not how it works
+[11:23:15] <dfj> hunterboerner: what were you thinking about for backwards compatibility with mods that went after particular ids - give them pretend IDs? different mods seem to reach arbitrarily deep in to grab their IDs - I'm just curious how backwards compatible your prototype is.
+[11:23:25] <Grum> also the needed process of 'code verification' is something that is bad as well
+[11:23:59] <hunterboerner> dfj example of those mods?
+[11:24:15] <sammko> no mods do that
+[11:24:23] <sammko> they use modapi.block.id
+[11:24:32] <dfj> so - forge mods jsust use teh registry?
+[11:24:40] <sammko> yeah?
+[11:24:48] <dfj> ack - my hands, tehy are made of putty!
+[11:25:02] <sammko> if you changed the id in the config of a block a mod is trying to acces it would break
+[11:25:09] <sammko> if it worked your way
 
 =========== SKYPE LOGS ==============
 
